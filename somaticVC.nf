@@ -796,7 +796,7 @@ process GetVersionASCAT {
   script:
   """
   R --version > v_r.txt
-  cat ascat.R | grep "ASCAT version" > v_ascat.txt
+  cat ${baseDir}/scripts/ascat.R | grep "ASCAT version" > v_ascat.txt
   """
 }
 
