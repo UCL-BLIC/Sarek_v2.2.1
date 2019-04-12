@@ -74,7 +74,7 @@ The worflow steps and tools used are as follows:
 
 The Sarek pipeline comes with documentation in the `docs/` directory:
 
-01. [Installation documentation](docs/INSTALL_ucl.md)
+01. [Installation documentation](docs/INSTALL.md)
 02. [Running the pipeline](docs/USAGE.md)
 03. [Command line parameters](docs/PARAMETERS.md)
 04. [Examples](docs/USE_CASES.md)

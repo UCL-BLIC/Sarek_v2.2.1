@@ -2,7 +2,7 @@
 
 The Sarek pipeline comes with the following documentation:
 
-01. [Installation documentation](INSTALL_ucl.md)
+01. [Installation documentation](INSTALL.md)
 02. [Running the pipeline](USAGE.md)
 03. [Examples](USE_CASES.md)
 04. [Processes documentation](PROCESS.md)

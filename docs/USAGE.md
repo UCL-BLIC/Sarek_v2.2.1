@@ -5,40 +5,11 @@ It is divided into two steps corresponding to the two main types of analysis off
  - Run a Germline Analysis
  - Run a Somatic Analysis
 
-This guide assumes you have internet access on the server where the analysis will take place. If you do not have that, please look into the [installation instructions](INSTALL_BIANCA.md) for the restricted access server Bianca at Uppmax, which should give an idea on how to adjust the following examples accordingly.
-
 
 It is recommended to run Sarek within a [screen](https://www.gnu.org/software/screen/) or [tmux](https://tmux.github.io/) session.
 This helps Sarek run uninterrupted until the analysis has finished.
 Furthermore, Sarek is designed to be run on a single sample for a germline analysis or a set of samples from the same individual for a somatic analysis.
 If more than one individual will be analysed, it is recommended that this is done in separate directories which is analysed separately.
-
-
-## Update to latest version
-
-To make sure that you have the latest version of Sarek, use:
-
-```bash
-nextflow pull SciLifeLab/Sarek
-```
-
-## Run the latest version
-
-If there is a feature or bugfix you want to use in a resumed or re-analyzed run, you have to update the workflow to the latest version.
-By default it is not updated automatically, so use something like:
-
-```bash
-nextflow run -latest SciLifeLab/Sarek/main.nf ... -resume
-```
-
-## Not on Uppmax
-The commands used in this guide is suitable on how to run on a cluster at Uppmax.
-To run these examples on a different infrastructure, there are a few things that needs to be changed.
-
- - Most likely, the `slurm` profile is not suitable to use.
- Find a more suitable one (or design your own) using the [configuration documentation](CONFIG.md)
- - The path for where reference genomes are located (specified in the `--genome_base` parameter) need to be modified.
- Use the instructions in the [reference documentation](REFERENCES.md) to make sure all the reference files are available.
 
 
 ## Run a Germline Analysis
@@ -53,13 +24,14 @@ For example, the file can be called `samples_germline.tsv` with the content (cor
 SUBJECT_ID  XX    0    SAMPLEID    1    /samples/normal_1.fastq.gz    /samples/normal_2.fastq.gz
 ```
 
-The first workflow that will be run is contained in the `main.nf` file and performs the preprocessing step consisting of mapping, marking of duplicates and base recalibration. Running this command will launch a nextflow process in the terminal which in turn submits jobs (processes) to the SLURM queue.
+The first workflow that will be run is contained in the `main.nf` file and performs the preprocessing step consisting of mapping, marking of duplicates and base recalibration. Running this command will launch a nextflow process in the 
+terminal which in turn submits jobs (processes) to the queue in legion/myriad.
+
+Please change `-profile legion` to `-profile myriad` if you are running Sarek in myriad instead of legion
 ```
-nextflow run SciLifeLab/Sarek/main.nf \
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/main.nf \
 --sample samples_germline.tsv \
--profile slurm  \
---project <your uppmax project id> \
---genome_base /sw/data/uppnex/ToolBox/hg38bundle \
+-profile legion  \
 --genome GRCh38
 ```
 
@@ -75,11 +47,9 @@ The results of the first step is located in the `Preprocessing` directory.
 These files will be used in the next step, where the actual variant calling takes place.
 Among other things, the preprocessing step should have created a new TSV file which is intended to be used as input for the variant calling step:
 ```
-nextflow run SciLifeLab/Sarek/germlineVC.nf \
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/germlineVC.nf \
 --sample Preprocessing/Recalibrated/recalibrated.tsv \
--profile slurm  \
---project <your uppmax project id> \
---genome_base /sw/data/uppnex/ToolBox/hg38bundle \
+-profile legion  \
 --genome GRCh38 \
 --tools HaplotypeCaller
 ```
@@ -87,20 +57,18 @@ When successful (`Success : true`), this step should produce vcf file(s) within 
 The next workflow will annotate the found variants.
 It is possible to specify the tools used for annotation (here VEP) and the variant-calling tools to use as input for annotation (here HaplotypeCaller).
 ```
-nextflow run SciLifeLab/Sarek/annotate.nf \
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/annotate.nf \
 --annotateTools HaplotypeCaller \
--profile slurm \
---project <your uppmax project id> \
---genome_base ~/Sarek/References/smallGRCh37 \
+-profile legion \
 --tools VEP
 ```
 
 Finally, run MultiQC to get an easily accessible report of all your analysis.
 ```
-nextflow run SciLifeLab/Sarek/runMultiQC.nf \
--profile slurm
---project <your uppmax project id> \
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/runMultiQC.nf \
+-profile legion \
 ```
+
 ## Run a Somatic Analysis
 
 This section presents a complete instruction on how to run a somatic analysis using Sarek on two  samples from the same individual. In this case one normal sample and one tumour sample will be used. However, Sarek can also accept more than one tumour sample (i.e. relapses) for the same individual.
@@ -118,13 +86,12 @@ For example, the file can be called `samples_somatic.tsv` with the content:
 SUBJECT_ID  XX    0    SAMPLEID1    1    /samples/normal_1.fastq.gz    /samples/normal_2.fastq.gz
 SUBJECT_ID  XX    1    SAMPLEID2    1    /samples/tumour_1.fastq.gz    /samples/tumour_2.fastq.gz
 ```
-The first workflow that will be run is contained in the `main.nf` file and performs the preprocessing step consisting of mapping, marking of duplicates and base recalibration. Running this command will launch a nextflow process in the terminal which in turn submits jobs (processes) to the SLURM queue.
+The first workflow that will be run is contained in the `main.nf` file and performs the preprocessing step consisting of mapping, marking of duplicates and base recalibration. Running this command will launch a nextflow process in the 
+terminal which in turn submits jobs (processes) to the queue in legion/myriad.
 ```
-nextflow run SciLifeLab/Sarek/main.nf \
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/main.nf \
 --sample samples_somatic.tsv \
--profile slurm  \
---project <your uppmax project id> \
---genome_base /sw/data/uppnex/ToolBox/hg38bundle \
+-profile legion  \
 --genome GRCh38
 ```
 
@@ -142,11 +109,9 @@ These files will be used in the next two steps, where the actual variant calling
 Among other things, the preprocessing step should have created a new TSV file which is intended to be used as input for the variant calling steps:
 
 ```
-nextflow run SciLifeLab/Sarek/germlineVC.nf \
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/germlineVC.nf \
 --sample Preprocessing/Recalibrated/recalibrated.tsv \
--profile slurm  \
---project <your uppmax project id> \
---genome_base /sw/data/uppnex/ToolBox/hg38bundle \
+-profile legion  \
 --genome GRCh38 \
 --tools HaplotypeCaller
 ```
@@ -155,11 +120,9 @@ The first variant calling step is actually the one from the germline analysis.
 This is included here since information regarding germline variants is still useful for analysis of somatic variants.
 The next variant calling step is the somatic specific analysis:
 ```
-nextflow run SciLifeLab/Sarek/somaticVC.nf \
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/somaticVC.nf \
 --sample Preprocessing/Recalibrated/recalibrated.tsv \
--profile slurm \
---project <your uppmax project id> \
---genome_base /sw/data/uppnex/ToolBox/hg38bundle \
+-profile legion \
 --genome GRCh38 \
 --tools Strelka
 ```
@@ -167,18 +130,15 @@ When successful (`Success : true`), this step should produce vcf file(s) within 
 The next workflow will annotate the found variants.
 It is possible to specify the tools used for annotation (here VEP) and the variant-calling tools to use as input for annotation (here HaplotypeCaller and Strelka).
 ```
-nextflow run SciLifeLab/Sarek/annotate.nf \
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/annotate.nf \
 --annotateTools HaplotypeCaller,Strelka \
 -profile slurm \
---project <your uppmax project id> \
---genome_base ~/Sarek/References/smallGRCh37 \
 --containerPath \
 --tools VEP
 ```
 
 Finally, run MultiQC to get an easily accessible report of all your analysis.
 ```
-nextflow run SciLifeLab/Sarek/runMultiQC.nf \
--profile slurm
---project <your uppmax project id> \
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/runMultiQC.nf \
+-profile legion 
 ```

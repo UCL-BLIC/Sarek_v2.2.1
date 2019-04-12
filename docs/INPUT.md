@@ -39,8 +39,8 @@ G15511    XX    1    D0ENMT    pathToFiles/G15511.D0ENMT.md.real.bam pathToFiles
 All the files will be created in the Preprocessing/NonRealigned/ directory, and by default a corresponding TSV file will also be deposited there. Generally, getting MuTect1 and Strelka calls on the preprocessed files should be done by:
 
 ```bash
-nextflow run SciLifeLab/Sarek/main.nf --sample Preprocessing/NonRealigned/mysample.tsv --step realign
-nextflow run SciLifeLab/Sarek/somaticVC.nf --sample Preprocessing/Recalibrated/mysample.tsv --tools Mutect2,Strelka
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/main.nf -profile legion --sample Preprocessing/NonRealigned/mysample.tsv --step realign
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/somaticVC.nf -profile legion --sample Preprocessing/Recalibrated/mysample.tsv --tools Mutect2,Strelka
 ```
 
 # Example TSV file for a normal/tumor pair with recalibrated BAM files
@@ -55,7 +55,7 @@ G15511    XX    1    D0ENMT    pathToFiles/G15511.D0ENMT.md.real.bam    pathToFi
 All the files will be in he Preprocessing/Recalibrated/ directory, and by default a corresponding TSV file will also be deposited there. Generally, getting MuTect1 and Strelka calls on the recalibrated files should be done by:
 
 ```bash
-nextflow run SciLifeLab/Sarek/somaticVC.nf --sample Preprocessing/Recalibrated/mysample.tsv --tools Mutect2,Strelka
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/somaticVC.nf -profile legion --sample Preprocessing/Recalibrated/mysample.tsv --tools Mutect2,Strelka
 ```
 
 ## Input FASTQ file name best practices

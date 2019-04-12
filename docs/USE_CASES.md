@@ -5,16 +5,16 @@ Using the `mapping` directive one will have a pair of mapped, deduplicated and r
 This is the usual option you have to give when you are starting from raw FASTQ data:
 
 ```bash
-nextflow run SciLifeLab/Sarek/main.nf --sample mysample.tsv
-nextflow run SciLifeLab/Sarek/germlineVC.nf --tools <tool>
-nextflow run SciLifeLab/Sarek/somaticVC.nf --tools <tool> # For somatic only
-nextflow run SciLifeLab/Sarek/annotate.nf --tool <tool> --annotateVCF myfile.vcf # For somatic only
-nextflow run SciLifeLab/Sarek/runMultiQC.nf
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/main.nf -profile legion --sample mysample.tsv
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/germlineVC.nf -profile legion --tools <tool>
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/somaticVC.nf -profile legion --tools <tool> # For somatic only
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/annotate.nf -profile legion --tool <tool> --annotateVCF myfile.vcf # For somatic only
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/runMultiQC.nf
 ```
 
 `mapping` will start by default, you do not have to give any additional parameters, only the TSV file describing the sample (see below).
 
-In the [genomes.config](https://github.com/SciLifeLab/Sarek/blob/master/conf/genomes.config) configuration file we are defining the intervals file as well, this is used to define regions for variant calling (in a scatter and gather fashion when possible).
+In the [genomes.config](../conf/genomes.config) configuration file we are defining the intervals file as well, this is used to define regions for variant calling (in a scatter and gather fashion when possible).
 The intervals are chromosomes cut at their centromeres (so each chromosome arm processed separately) also additional unassigned contigs.
 We are ignoring the hs37d5 contig that contains concatenated decoy sequences.
 
@@ -28,9 +28,9 @@ Also, older version are renamed with incremented numbers.
 The workflow should be started in this case with the smallest set of options as written above:
 
 ```bash
-nextflow run SciLifeLab/Sarek/main.nf --sample mysample.tsv
-nextflow run SciLifeLab/Sarek/germlineVC.nf --tools <tool>
-nextflow run SciLifeLab/Sarek/runMultiQC.nf
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/main.nf -profile legion --sample mysample.tsv
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/germlineVC.nf -profile legion --tools <tool>
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/runMultiQC.nf -profile legion
 ```
 
 The TSV file should have at least one tab-separated lines:
@@ -52,9 +52,9 @@ The columns are:
 
 The `--sampleDir` option can be used to point Sarek to a directory with FASTQ files:
 ```bash
-nextflow run SciLifeLab/Sarek/main.nf --sampleDir path/to/FASTQ/files
-nextflow run SciLifeLab/Sarek/germlineVC.nf --tools <tool>
-nextflow run SciLifeLab/Sarek/runMultiQC.nf
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/main.nf -profile legion --sampleDir path/to/FASTQ/files
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/germlineVC.nf -profile legion --tools <tool>
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/runMultiQC.nf -profile legion
 ```
 The given directory is searched recursively for FASTQ files that are named `*_R1_*.fastq.gz`, and a matching pair with the same name except `_R2_` instead of `_R1_` is expected to exist alongside.
 All of the found FASTQ files are considered to belong to the sample.
@@ -112,11 +112,11 @@ SUBJECT_ID  XX    1    SAMPLEIDR    9    /samples/relapse9_1.fastq.gz    /sample
 ## Starting from recalibration for tumor/normal samples
 
 ```bash
-nextflow run SciLifeLab/Sarek/main.nf --sample mysample.tsv --step recalibrate
-nextflow run SciLifeLab/Sarek/germlineVC.nf --tools <tool>
-nextflow run SciLifeLab/Sarek/somaticVC.nf --tools <tool>
-nextflow run SciLifeLab/Sarek/annotate.nf --tool <tool> --annotateVCF myfile.vcf
-nextflow run SciLifeLab/Sarek/runMultiQC.nf
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/main.nf -profile legion --sample mysample.tsv --step recalibrate
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/germlineVC.nf -profile legion --tools <tool>
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/somaticVC.nf -profile legion --tools <tool>
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/Sarek/annotate.nf -profile legion --tool <tool> --annotateVCF myfile.vcf
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/Sarek/runMultiQC.nf -profile legion
 ```
 
 And the corresponding TSV file should be like (obviously, if you do not have relapse samples, you can leave out this last line):
@@ -151,10 +151,10 @@ In this case, you need to start with `--step=recalibrate` (see previous section)
 At this step we are assuming that all the required preprocessing is over, we only want to run variant callers or other tools using recalibrated BAMs.
 
 ```bash
-nextflow run SciLifeLab/Sarek/germlineVC.nf --tools <tool>
-nextflow run SciLifeLab/Sarek/somaticVC.nf --tools <tool>
-nextflow run SciLifeLab/Sarek/annotate.nf --tool <tool> --annotateVCF myfile.vcf
-nextflow run SciLifeLab/Sarek/runMultiQC.nf
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/germlineVC.nf -profile legion --tools <tool>
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/somaticVC.nf -profile legion --tools <tool>
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/annotate.nf -profile legion --tool <tool> --annotateVCF myfile.vcf
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/runMultiQC.nf -profile legion
 ```
 
 And the corresponding TSV file should be like (obviously, if you do not have relapse samples, you can leave out this last line):
@@ -175,5 +175,5 @@ The Strelka part of the workflow will pick up these intervals, and activate the 
 regions (exons or the target) to some extent before submitting to the workflow. To add the target BED file configure the flow like:
 
 ```bash
-nextflow run SciLifeLab/Sarek/germlineVC.nf --tools haplotypecaller,strelka,mutect2 --targetBED targets.bed --sample my_panel.tsv
+nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/germlineVC.nf -profile legion --tools haplotypecaller,strelka,mutect2 --targetBED targets.bed --sample my_panel.tsv
 ```

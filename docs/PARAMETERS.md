@@ -16,11 +16,6 @@ Disable all QC tools and MultiQC.
 
 Choose an output directory
 
-### --project `ProjectID`
-
-Specify a project number ID on a UPPMAX cluster.
-(optional if not on such a cluster)
-
 ### --sample `file.tsv`
 
 Use the given TSV file as sample (cf [TSV documentation](TSV.md)).
