@@ -74,14 +74,14 @@ The worflow steps and tools used are as follows:
 
 The Sarek pipeline comes with documentation in the `docs/` directory:
 
-01. [Installation documentation](https://github.com/SciLifeLab/Sarek/blob/master/docs/INSTALL_ucl.md)
-02. [Running the pipeline](https://github.com/SciLifeLab/Sarek/blob/master/docs/USAGE.md)
-03. [Command line parameters](https://github.com/SciLifeLab/Sarek/blob/master/docs/PARAMETERS.md)
-04. [Examples](https://github.com/SciLifeLab/Sarek/blob/master/docs/USE_CASES.md)
-05. [Input files documentation](https://github.com/SciLifeLab/Sarek/blob/master/docs/INPUT.md)
-06. [Processes documentation](https://github.com/SciLifeLab/Sarek/blob/master/docs/PROCESS.md)
-07. [More information about ASCAT](https://github.com/SciLifeLab/Sarek/blob/master/docs/ASCAT.md)
-08. [Output documentation structure](https://github.com/SciLifeLab/Sarek/blob/master/docs/OUTPUT.md)
+01. [Installation documentation](docs/INSTALL_ucl.md)
+02. [Running the pipeline](docs/USAGE.md)
+03. [Command line parameters](docs/PARAMETERS.md)
+04. [Examples](docs/USE_CASES.md)
+05. [Input files documentation](docs/INPUT.md)
+06. [Processes documentation](docs/PROCESS.md)
+07. [More information about ASCAT](docs/ASCAT.md)
+08. [Output documentation structure](docs/OUTPUT.md)
 
 ## Contributions & Support
 
@@ -91,7 +91,7 @@ For further information or help, don't hesitate to get in touch on [Gitter][gitt
 
 ## CHANGELOG
 
-- [CHANGELOG](https://github.com/SciLifeLab/Sarek/blob/master/CHANGELOG.md)
+- [CHANGELOG](CHANGELOG.md)
 
 ## Credits
 
