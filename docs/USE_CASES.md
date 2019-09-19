@@ -14,7 +14,7 @@ nextflow run /shared/ucl/depts/cancer/apps/nextflow_pipelines/Sarek/runMultiQC.n
 
 `mapping` will start by default, you do not have to give any additional parameters, only the TSV file describing the sample (see below).
 
-In the [genomes.config](../conf/genomes.config) configuration file we are defining the intervals file as well, this is used to define regions for variant calling (in a scatter and gather fashion when possible).
+In the [genomes.config](../conf/genomes_legion.config) configuration file we are defining the intervals file as well, this is used to define regions for variant calling (in a scatter and gather fashion when possible).
 The intervals are chromosomes cut at their centromeres (so each chromosome arm processed separately) also additional unassigned contigs.
 We are ignoring the hs37d5 contig that contains concatenated decoy sequences.
 
